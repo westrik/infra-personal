@@ -77,20 +77,14 @@ resource "aws_key_pair" "generated_key" {
   public_key = "${tls_private_key.westrikworld_staging_key.public_key_openssh}"
 }
 
-data "aws_ami" "debian" {
-  most_recent = true
+data "aws_ami" "westrikworld" {
+  most_recent      = true
+  owners           = ["self"]
 
   filter {
     name   = "name"
-    values = ["debian-stretch-hvm-x86_64*"]
+    values = ["westrikworld *"]
   }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["379101102735"] # Debian
 }
 
 resource "aws_instance" "web" {
@@ -106,7 +100,7 @@ resource "aws_instance" "web" {
 
   instance_type = "t3a.micro"
 
-  ami = "${data.aws_ami.debian.id}"
+  ami = "${data.aws_ami.westrikworld.id}"
 
   tags {
     Name = "westrikworld_staging-web"

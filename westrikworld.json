@@ -16,5 +16,6 @@
     "instance_type": "t3a.micro",
     "ssh_username": "admin",
     "ami_name": "westrikworld {{timestamp}}"
-  }]
+  }],
+  "": "TODO: https://www.packer.io/intro/getting-started/provision.html"
 }
