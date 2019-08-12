@@ -53,6 +53,14 @@ resource "aws_security_group" "default" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    # TODO: add an ELB and change cidr_blocks to ["10.0.0.0/16"]
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   # outbound internet access
   egress {
     from_port   = 0
@@ -120,7 +128,11 @@ resource "aws_instance" "web" {
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get -y update",
-      "sudo apt-get -y install nginx",
+      "sudo ufw default deny incoming",
+      "sudo ufw default allow outgoing",
+      "sudo ufw allow ssh",
+      "sudo ufw allow 'Nginx Full'",
+      "yes | sudo ufw enable",
       "sudo service nginx start",
     ]
   }
